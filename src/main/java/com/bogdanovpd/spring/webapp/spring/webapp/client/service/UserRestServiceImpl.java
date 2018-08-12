@@ -11,36 +11,38 @@ import java.util.List;
 @Service
 public class UserRestServiceImpl implements  UserRestService {
 
+    public static final String HTTP_LOCALHOST_8080_USERS_REST = "http://localhost:8080/users-rest/";
     private RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public List<User> getAllUsers() {
-        ResponseEntity<User[]> responseEntityUser = restTemplate.getForEntity("http://localhost:8080/users-rest/", User[].class);
+        ResponseEntity<User[]> responseEntityUser = restTemplate.getForEntity(HTTP_LOCALHOST_8080_USERS_REST, User[].class);
         return Arrays.asList(responseEntityUser.getBody());
     }
 
     @Override
     public User getUserById(long id) {
-        return restTemplate.getForObject("http://localhost:8080/users-rest/" + id, User.class);
+        return restTemplate.getForObject(HTTP_LOCALHOST_8080_USERS_REST + id, User.class);
     }
+    
 
     @Override
     public User getUserByLogin(String login) {
-        return restTemplate.getForObject("http://localhost:8080/users-rest/" + login, User.class);
+        return restTemplate.getForObject(HTTP_LOCALHOST_8080_USERS_REST + login, User.class);
     }
 
     @Override
     public void addUser(User user) {
-        restTemplate.postForObject("http://localhost:8080/users-rest/", user, User.class);
+        restTemplate.postForObject(HTTP_LOCALHOST_8080_USERS_REST, user, User.class);
     }
 
     @Override
     public void updateUser(User user) {
-        restTemplate.put("http://localhost:8080/users-rest/" + user.getId(), user);
+        restTemplate.put(HTTP_LOCALHOST_8080_USERS_REST + user.getId(), user);
     }
 
     @Override
     public void deleteUser(long id) {
-        restTemplate.delete("http://http://localhost:8080/users-rest/" + id);
+        restTemplate.delete(HTTP_LOCALHOST_8080_USERS_REST + id);
     }
 }
