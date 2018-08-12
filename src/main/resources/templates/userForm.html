@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form th:action="@{/saveUser}" method="post" th:object="${user}" style="margin: 5px">
+        <div class="form-group" style="margin: 5px; width: 30%">
+            <label>Login: </label>
+            <input class="form-control" type="text" name="login" th:field="*{login}" />
+        </div>
+        <div class="form-group" style="margin: 5px; width: 30%">
+            <label>Password: </label>
+            <input class="form-control" type="password" name="pass" th:field="*{password}"/>
+        </div>
+        <div class="form-group" style="margin: 5px; width: 30%">
+            <label>First name: </label>
+            <input class="form-control" type="text" name="firstName" th:field="*{firstName}"/>
+        </div>
+        <div class="form-group" style="margin: 5px; width: 30%">
+            <label>Last Name: </label>
+            <input class="form-control" type="text" name="lastName" th:field="*{lastName}"/>
+        </div>
+        <div class="form-group" style="margin: 5px; width: 30%">
+            <label>User role: </label>
+            <select class="form-control" th:field="*{roles}" multiple>
+                <option th:each="role : ${roles}" th:value="${{role}}" th:text="${role.name}"/>
+            </select>
+        </div>
+        <input type="hidden" name="userId" th:field="*{id}"/>
+        <button style="margin: 5px; margin-top: 15px" class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</body>
+</html>

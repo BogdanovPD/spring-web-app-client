@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>List of Users</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+</head>
+<body style="background: #f2f2f2">
+<div class="container">
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <form th:action="@{/logout}" method="post" style="right: 10px; top: 10px; position: fixed">
+            <button type="submit" class="btn btn-default">Log out</button>
+        </form>
+        </li>
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
+    <div class="col-md-3">
+        <ul class="nav nav-pills nav-stacked" style="background: white; width: 250px; height: 100%; left: 0; position: fixed; padding-top: 20px">
+            <li class="active"><a href="/admin">Admin</a></li>
+            <li><a href="/user">User</a></li>
+        </ul>
+    </div>
+
+<div class="col-md-9 fill jumbotron" style="margin-left: 250px; background: #f2f2f2">
+    <ul class="nav nav-tabs" id="user_tabs">
+        <li class="active"><a data-toggle="tab" href="#users">Users</a></li>
+        <li><a data-toggle="tab" href="#new_user">New User</a></li>
+    </ul>
+    <div class="tab-content" style="border: #ddd 1px solid;border-top: 0; background: white">
+        <div id="users" class="tab-pane fade in active" style="margin-top: 0">
+            <div style="background: lightgrey; padding: 1px; padding-left: 5px; border: #ddd 1px solid; border-radius: 2px">
+            <h5 style="background: lightgrey; margin-left: 5px; font-weight: bold">All Users</h5>
+            </div>
+            <div style="margin: 10px">
+    <table class="table table-condensed table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Login</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">User role</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <th scope="row" th:text="${user.id}"/>
+            <td th:text="${user.login}"/>
+            <td th:text="${user.firstName}"/>
+            <td th:text="${user.lastName}"/>
+            <td><h6 th:each="role : ${user.roles}" th:text="${role.name}" /></td>
+            <td>
+                <a type="submit" th:href="@{|/users/${user.id}/edit|}" class="btn btn-default" data-remote="false" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-edit" style="font-size: small"></span> </a>
+            </td>
+            <td>
+                <form method="get" th:action="@{|/users/${user.id}/delete|}">
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-remove" style="font-size: small"></span> </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+            </div>
+    </div>
+        <div id="new_user" class="tab-pane">
+            <div style="background: lightgrey; padding: 1px; padding-left: 5px; border: #ddd 1px solid; border-radius: 2px">
+                <h5 style="background: lightgrey; margin-left: 5px; font-weight: bold">New User</h5>
+            </div>
+            <div class="jumbotron" style="background: white" id="addUser">
+                <form th:action="@{/saveUser}" method="post" th:object="${user}" style="margin: 5px">
+                    <div class="form-group" style="margin: 5px; ; width: 50%">
+                        <label class="control-label">Login: </label>
+                        <input class="form-control" type="text" name="login" th:field="*{login}" />
+                    </div>
+                    <div class="form-group" style="margin: 5px; width: 50%">
+                        <label>Password: </label>
+                        <input class="form-control" type="password" name="pass" th:field="*{password}"/>
+                    </div>
+                    <div class="form-group" style="margin: 5px; width: 50%">
+                        <label>First name: </label>
+                        <input class="form-control" type="text" name="firstName" th:field="*{firstName}"/>
+                    </div>
+                    <div class="form-group" style="margin: 5px; width: 50%">
+                        <label>Last Name: </label>
+                        <input class="form-control" type="text" name="lastName" th:field="*{lastName}"/>
+                    </div>
+                    <div class="form-group" style="margin: 5px; width: 50%">
+                        <label>User role: </label>
+                        <select class="form-control" th:field="*{roles}" multiple>
+                            <option th:each="role : ${roles}" th:value="${{role}}" th:text="${role.name}"/>
+                        </select>
+                    </div>
+                    <input type="hidden" name="userId" th:field="*{id}"/>
+                    <button style="margin: 5px; margin-top: 15px" class="btn btn-primary" type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit user</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#myModal').on('shown.bs.modal', function(e) {
+        var link = $(e.relatedTarget);
+        $(this).find('.modal-body').load(link.attr('href'));
+    });
+</script>
+</body>
+</html>
