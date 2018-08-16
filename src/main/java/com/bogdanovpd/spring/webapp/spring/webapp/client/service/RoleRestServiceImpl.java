@@ -21,6 +21,11 @@ public class RoleRestServiceImpl implements RoleRestService {
     }
 
     @Override
+    public Role getRoleByName(String name) {
+        return restTemplate.getForObject(HTTP_LOCALHOST_8080_ROLES_REST + name, Role.class);
+    }
+
+    @Override
     public Role getRoleById(long id) {
         return restTemplate.getForObject(HTTP_LOCALHOST_8080_ROLES_REST + id, Role.class);
     }
